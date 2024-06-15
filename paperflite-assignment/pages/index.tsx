@@ -2,12 +2,12 @@ import React, { useEffect } from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { State } from "@/src/redux/reducers";
+import Image from "next/image";
 import {
   getCardList,
   getConversationList,
   getRecipentList,
 } from "@/src/redux/actions/home";
-import Image from "next/image";
 import {
   Ellipse,
   Filter,
@@ -151,9 +151,7 @@ const Home: React.FC<HomeProps> = ({
               {data.map(({ title, time, name, src }: any, index) => {
                 return (
                   <div
-                    className={`flex gap-x-2 ${
-                      index === 0 ? "mt-9" : ""
-                    }`}
+                    className={`flex gap-x-2 ${index === 0 ? "mt-9" : ""}`}
                     key={name}
                   >
                     <Image alt={`${src}`} src={src} width={80} height={80} />
@@ -183,11 +181,7 @@ const Home: React.FC<HomeProps> = ({
       </div>
 
       <div className="xl:col-span-8 col-span-12 w-full">
-        <Image
-          src={logo}
-          alt="PaperFliteLogo"
-          className="shadow-xl w-full"
-        />
+        <Image src={logo} alt="PaperFliteLogo" className="shadow-xl w-screen h-36 object-cover" />
         <div className="px-6 space-y-4 mt-2">
           <div className="flex justify-between">
             <p className="text-2xl font-bold text-gray-700">
@@ -236,7 +230,7 @@ const Home: React.FC<HomeProps> = ({
                       <div className="flex items-center gap-x-4 px-2">
                         <p
                           className={`font-medium text-gray-600 ${
-                            desktop ? "text-xs" : "text-sm "
+                            desktop ? "text-sm" : "text-xs"
                           }`}
                         >
                           {name}
