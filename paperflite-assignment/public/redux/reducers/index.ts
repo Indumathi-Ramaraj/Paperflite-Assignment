@@ -1,9 +1,9 @@
 import { combineReducers } from "redux";
 
-import conversationReducer, { ConversationReducer } from "./conversation";
+import homeReducer from "./home";
 
 export const rootReducer = combineReducers({
-  conversation: conversationReducer,
+  home: homeReducer,
 });
 
 export type State = ReturnType<typeof rootReducer>;
