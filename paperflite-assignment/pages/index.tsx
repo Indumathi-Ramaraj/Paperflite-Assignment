@@ -1,27 +1,28 @@
 import React, { useEffect } from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { State } from "@/public/redux/reducers";
+import { State } from "@/src/redux/reducers";
 import {
   getCardList,
   getConversationList,
   getRecipentList,
-} from "@/public/redux/actions/home";
+} from "@/src/redux/actions/home";
 import Image from "next/image";
 import {
-  SendIcon,
   Ellipse,
-  ProfileImage,
   Filter,
+  ProfileImage,
   SearchIcon,
-  logo,
+  SendIcon,
   Icons,
-  MessagePink,
-  User,
-  SharePink,
   Location,
-} from "../src/assets/index";
+  logo,
+  MessagePink,
+  SharePink,
+  User,
+} from "../src/assets";
 import { IconsData } from "./api/mockData/iconsData";
+import useScreenSize from "@/src/customHook/screenSize";
 
 interface HomeProps {
   dispatch: Function;
@@ -56,21 +57,26 @@ const Home: React.FC<HomeProps> = ({
     dispatch(getConversationList());
     dispatch(getCardList());
     dispatch(getRecipentList());
-  }, []);
+  }, [dispatch]);
+
+  const screen = useScreenSize();
+
+  const desktop = screen.width > 767;
 
   return (
     <div
       className="grid grid-cols-12 h-screen"
-      style={{ fontFamily: "Samsung Sharp Sans" }}
+      style={{ fontFamily: "Samsung Sharp Sans", overflow: "auto" }}
     >
-      <div className="col-span-4">
-        <div className="grid grid-cols-12">
-          <div className="col-span-2 border-r border-gray-300 px-2 py-10 h-screen flex flex-col justify-between">
+      <div className="col-span-4 hidden xl:block">
+        <div className="grid grid-cols-12 w-full">
+          <div className="xl:col-span-2 border-r border-gray-300 px-2 py-10 h-screen flex flex-col justify-between">
             <div className="flex flex-col items-center gap-y-10 px-2">
-              {IconsData.map((item) => (
+              {IconsData.map(({ src }: any) => (
                 <Image
-                  src={item.src}
-                  alt={`${item.src}`}
+                  key={src}
+                  src={src}
+                  alt={`${src}`}
                   width={20}
                   height={20}
                   className="cursor-pointer"
@@ -95,8 +101,8 @@ const Home: React.FC<HomeProps> = ({
               />
             </div>
           </div>
-          
-          <div className="col-span-10 border-r border-gray-300 px-2 py-10 h-screen">
+
+          <div className="xl:col-span-10 border-r border-gray-300 px-2 py-10 h-screen">
             <div className="px-4 space-y-4">
               <div className="flex justify-between">
                 <div className="flex flex-col">
@@ -118,7 +124,7 @@ const Home: React.FC<HomeProps> = ({
               <div className="relative">
                 <input
                   type="text"
-                  className="px-2 pr-4 py-1 border rounded-lg w-full text-xs text-gray-400 italic"
+                  className="px-2 pr-4 py-3 border rounded-lg w-full text-xs text-gray-400 italic"
                   placeholder="search by conversations and contacts"
                 />
                 <div
@@ -135,20 +141,26 @@ const Home: React.FC<HomeProps> = ({
                   />
                 </div>
               </div>
-              <div className="flex gap-x-4 text-xs">
+              <div className="flex gap-x-4 text-xs mb-4">
                 <p className="text-gray-500">Sort by:</p>
-                <p className="text-[#E51058]">Created Date</p>
+                <p className="pinktext">Created Date</p>
                 <p className="text-gray-500">Last Activity</p>
                 <p className="text-gray-500">Time Spend</p>
               </div>
+
               {data.map(({ title, time, name, src }: any, index) => {
                 return (
-                  <div className="flex gap-x-2">
+                  <div
+                    className={`flex gap-x-2 ${
+                      index === 0 ? "mt-9" : ""
+                    }`}
+                    key={name}
+                  >
                     <Image alt={`${src}`} src={src} width={80} height={80} />
                     <div>
                       <p
                         className={`text-sm font-medium leading-3 mt-1 ${
-                          index === 1 ? "text-[#E51058]" : "text-gray-700"
+                          index === 1 ? "pinktext" : "text-gray-700"
                         }`}
                       >
                         {title}
@@ -170,14 +182,18 @@ const Home: React.FC<HomeProps> = ({
         </div>
       </div>
 
-      <div className="col-span-8">
-        <Image src={logo} alt="PaperFliteLogo" className="shadow-xl" />
+      <div className="xl:col-span-8 col-span-12 w-full">
+        <Image
+          src={logo}
+          alt="PaperFliteLogo"
+          className="shadow-xl w-full"
+        />
         <div className="px-6 space-y-4 mt-2">
-          <div className="flex justify-between ">
+          <div className="flex justify-between">
             <p className="text-2xl font-bold text-gray-700">
-              Collection "seeeek"
+              {`Collection "seeeek"`}
             </p>
-            <Image src={Icons} alt="Icons" />
+            {desktop && <Image src={Icons} alt="Icons" />}
           </div>
 
           <div>
@@ -185,10 +201,13 @@ const Home: React.FC<HomeProps> = ({
             <p className="text-xs text-gray-500">1 month ago via QuickSend</p>
           </div>
 
-          <div className="grid grid-cols-10 gap-x-4">
+          <div className="flex gap-x-4 w-full flex-wrap">
             {cardDatas.map(({ percentage, text, src }: any) => {
               return (
-                <div className="lg:col-span-2 md:col-span-1 px-3 space-y-4 py-4 border border-gray-100 rounded-md shadow-sm">
+                <div
+                  className="px-3 space-y-4 py-4 border border-gray-100 rounded-md shadow-sm w-32"
+                  key={text}
+                >
                   <div className="flex justify-between">
                     <p className="text-sm leading-4">{percentage}</p>
                     <Image src={src} width={15} height={15} alt={`${src}`} />
@@ -201,8 +220,8 @@ const Home: React.FC<HomeProps> = ({
 
           <div className="flex gap-x-8">
             <div>
-              <p className="text-[#E51058] text-base">Recipients - 08</p>
-              <p className="text-[#E51058] text-center"> __ </p>
+              <p className="pinktext text-base">Recipients - 08</p>
+              <p className="pinktext text-center"> __ </p>
             </div>
             <p className="text-base">Sections - 05</p>
           </div>
@@ -210,39 +229,62 @@ const Home: React.FC<HomeProps> = ({
           <div>
             {recipentData.map(({ src, name, lastView, min }: any) => {
               return (
-                <div>
+                <div key={name}>
                   <div className="flex gap-x-3 mb-4 justify-between">
                     <div className="flex">
                       <Image src={src} alt={`${src}`} width={35} height={35} />
-                      <div className="flex items-center gap-x-4 px-4">
-                        <p className="text-sm font-medium text-gray-600">
+                      <div className="flex items-center gap-x-4 px-2">
+                        <p
+                          className={`font-medium text-gray-600 ${
+                            desktop ? "text-xs" : "text-sm "
+                          }`}
+                        >
                           {name}
                         </p>
-                        <div className="border-r border-gray-300 h-5"></div>
-                        <p className="text-sm text-gray-500">{lastView}</p>
+                        {desktop && (
+                          <div className="border-r border-gray-300 h-5" />
+                        )}
+                        {desktop && (
+                          <p className="text-sm text-gray-500">{lastView}</p>
+                        )}
                       </div>
                     </div>
-                    <div className="flex  items-center gap-x-4">
-                      <p className="text-sm text-gray-500">{min}</p>
+                    <div
+                      className={`flex items-center ${
+                        desktop ? "gap-x-4" : "gap-x-2"
+                      }`}
+                    >
+                      <p
+                        className={`${
+                          desktop ? "text-sm" : "text-xs"
+                        } text-gray-500`}
+                      >
+                        {min}
+                      </p>
                       <Image
                         src={MessagePink}
                         alt={`MessagePink`}
-                        width={15}
-                        height={15}
+                        width={desktop ? 15 : 13}
+                        height={desktop ? 15 : 13}
                       />
-                      <Image src={User} alt={`User`} width={15} height={15} />
+                      <Image
+                        src={User}
+                        alt={`User`}
+                        width={desktop ? 15 : 13}
+                        height={desktop ? 15 : 13}
+                      />
                       <Image
                         src={SharePink}
                         alt={`SharePink`}
-                        width={15}
-                        height={15}
+                        width={desktop ? 15 : 13}
+                        height={desktop ? 15 : 13}
                       />
                       <div className="border-r border-gray-300 h-5"></div>
                       <Image
                         src={Location}
                         alt={`Location`}
-                        width={35}
-                        height={35}
+                        width={desktop ? 35 : 23}
+                        height={desktop ? 35 : 23}
                       />
                     </div>
                   </div>
@@ -252,7 +294,6 @@ const Home: React.FC<HomeProps> = ({
           </div>
         </div>
       </div>
-
     </div>
   );
 };

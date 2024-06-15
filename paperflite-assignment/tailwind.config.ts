@@ -17,7 +17,18 @@ const config: Config = {
         "Samsung Sharp Sans": ["Samsung Sharp Sans", "sans-serif"],
       },
     },
+    screens: {
+
+      sm: "320px",
+
+      md: "375px",
+
+      lg: "768px",
+
+      xl: "1024px",
+    },
   },
+
   plugins: [],
 };
 export default config;
