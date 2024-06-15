@@ -3,24 +3,27 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: "Samsung Sharp Sans";
-  src: url("/public/fonts/samsungsharpsans.otf");
+  font-family: "Samsung Sharp Sans Regular";
+  font-style: normal;
   font-weight: normal;
-  font-style: normal;
+  src: local("Samsung Sharp Sans Regular"),
+    url("/public/fonts/samsungsharpsans.woff") format("woff");
 }
 
 @font-face {
-  font-family: "Samsung Sharp Sans";
-  src: url("/public/fonts/samsungsharpsans-bold.otf");
-  font-weight: bold;
+  font-family: "Samsung Sharp Sans Medium";
   font-style: normal;
+  font-weight: normal;
+  src: local("Samsung Sharp Sans Medium"),
+    url("/public/fonts/samsungsharpsans-medium.woff") format("woff");
 }
 
 @font-face {
-  font-family: "Samsung Sharp Sans";
-  src: url("/public/fonts/samsungsharpsans-medium.otf");
-  font-weight: medium;
+  font-family: "Samsung Sharp Sans Bold";
   font-style: normal;
+  font-weight: normal;
+  src: local("Samsung Sharp Sans Bold"),
+    url("/public/fonts/samsungsharpsans-bold.woff") format("woff");
 }
 
 body {
@@ -31,7 +34,7 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
-  font-family: "Samsung Sharp Sans", sans-serif;
+  font-family: "Samsung Sharp Sans", sans-serif !important;
 }
 
 @layer utilities {

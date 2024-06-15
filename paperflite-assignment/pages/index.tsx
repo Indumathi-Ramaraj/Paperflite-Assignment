@@ -1,10 +1,10 @@
+import React, { useEffect } from "react";
+import { compose } from "redux";
+import { connect } from "react-redux";
+import { State } from "@/public/redux/reducers";
+import { getConversationList } from "@/public/redux/actions/conversations";
 import Image from "next/image";
 import {
-  Search,
-  Sound,
-  Layer,
-  Message,
-  CircleImage,
   SendIcon,
   Ellipse,
   ProfileImage,
@@ -13,33 +13,57 @@ import {
   logo,
   Icons,
 } from "../src/assets/index";
+import { IconsData } from "./api/mockData/iconsData";
 
-export default function Home() {
+interface HomeProps {
+  dispatch: Function;
+  conversation: {
+    getting: boolean;
+    error: string;
+    data: Array<object>;
+  };
+}
+
+const Home: React.FC<HomeProps> = ({ dispatch, conversation }) => {
+  const { data, getting } = conversation || {};
+
+  console.log("data..", data);
+
+  useEffect(() => {
+    dispatch(getConversationList());
+  }, []);
+
   return (
     <div className="grid grid-cols-12 h-screen">
       <div className="col-span-4 border-r border-gray-400">
         <div className="grid grid-cols-12">
           <div className="col-span-2 border-r border-gray-400 px-2 py-10 h-screen flex flex-col justify-between">
             <div className="flex flex-col items-center gap-y-10 px-2">
-              <Image src={Search} alt="Vercel Logo" width={20} height={20} />
-              <Image src={Sound} alt="Vercel Logo" width={20} height={20} />
-              <Image src={Layer} alt="Vercel Logo" width={20} height={20} />
-              <Image src={Message} alt="Vercel Logo" width={20} height={20} />
-              <Image
-                src={CircleImage}
-                alt="Vercel Logo"
-                width={20}
-                height={20}
-              />
-              <Image src={SendIcon} alt="Vercel Logo" width={20} height={20} />
+              {IconsData.map((item) => (
+                <Image
+                  src={item.src}
+                  alt={`${item.src}`}
+                  width={20}
+                  height={20}
+                  className="cursor-pointer"
+                />
+              ))}
+              <Image src={SendIcon} alt="SendIcon" width={20} height={20} />
             </div>
             <div className="space-y-8 flex flex-col items-center">
-              <Image src={Ellipse} alt="Vercel Logo" width={20} height={20} />
+              <Image
+                src={Ellipse}
+                alt="Ellipse"
+                width={20}
+                height={20}
+                className="cursor-pointer"
+              />
               <Image
                 src={ProfileImage}
-                alt="Vercel Logo"
-                width={60}
-                height={60}
+                alt="ProfileImage"
+                width={40}
+                height={40}
+                className="cursor-pointer"
               />
             </div>
           </div>
@@ -54,7 +78,13 @@ export default function Home() {
                     Track user engagement
                   </p>
                 </div>
-                <Image src={Filter} alt="Filter" width={34} height={34} />
+                <Image
+                  src={Filter}
+                  alt="Filter"
+                  width={34}
+                  height={34}
+                  className="cursor-pointer"
+                />
               </div>
               <div className="relative">
                 <input
@@ -72,6 +102,7 @@ export default function Home() {
                     width={12}
                     height={12}
                     alt="searchIcon"
+                    className="cursor-pointer"
                   />
                 </div>
               </div>
@@ -87,11 +118,7 @@ export default function Home() {
       </div>
 
       <div className="col-span-8">
-        <Image
-          src={logo}
-          alt="PaperFliteLogo"
-          className="shadow-xl"
-        />
+        <Image src={logo} alt="PaperFliteLogo" className="shadow-xl" />
 
         <div className="flex justify-between px-6 mt-2">
           <p className="text-2xl font-bold text-gray-700">
@@ -108,4 +135,10 @@ export default function Home() {
       </div>
     </div>
   );
-}
+};
+
+const mapStateToProps = (state: State) => ({
+  conversation: state.conversation.conversationList,
+});
+
+export default compose(connect(mapStateToProps))(Home);
