@@ -19,3 +19,6 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+
+## Server Details
+To get the data in website .Please visit https://paperflite-assignment-cn4y.vercel.app/
